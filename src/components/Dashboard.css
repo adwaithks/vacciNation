@@ -1,0 +1,218 @@
+.dashboard {
+    width: 100vw;
+    height: 100%;
+    background-color: rgb(0, 0, 0);
+}
+
+.card-available {
+    width: 95%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 10px;
+    height: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    cursor: pointer;
+    border-radius: 5px;
+    border: rgb(0, 255, 0) solid 1px;
+    background-color: rgba(165, 247, 0, 0.123);
+}
+
+.card-unavailable {
+    width: 95%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 10px;
+    height: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    cursor: pointer;
+    border-radius: 5px;
+    border: red solid 1px;
+    background-color: rgba(255, 0, 0, 0.123);
+}
+
+h4 {
+    font-weight: 400;
+    color: white;
+}
+
+.card-available-label {
+    border: green solid 1px;
+    background-color: rgba(165, 247, 0, 0.219);
+    font-weight: 400;
+    border-radius: 20px;
+    padding-left: 5px;
+    padding-right: 5px;
+    color: white;
+    margin-left: 2px;
+}
+
+.card-unavailable-label {
+    border: red solid 1px;
+    background-color: rgba(255, 0, 0, 0.123);
+    font-weight: 400;
+    border-radius: 20px;
+    padding-left: 5px;
+    padding-right: 5px;
+    color: white;
+    margin-left: 2px;
+}
+
+span {
+    background-color: rgba(19, 19, 19, 0.171);
+    border: rgb(88, 88, 88) 1px solid;
+    border-radius: 20px;
+    width: fit-content;
+    color: rgb(182, 182, 182);
+    margin-bottom: 5px;
+    margin-right: 2px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+h2 {
+    color: white;
+    font-weight: 550;
+}
+
+.card-name {
+    margin-top: 10px;
+    width: 95%;
+    font-weight: 800;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: auto;
+    margin-bottom: 10px;
+    margin-right: auto;
+}
+
+.card-address {
+    margin-top: 10px;
+    width: 95%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: auto;
+    margin-bottom: 10px;
+    margin-right: auto;
+}
+
+.card-blockname,
+.card-time,
+.card-date,
+.card-feetype,
+.card-vaccine {
+    width: 95%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: auto;
+    margin-bottom: 10px;
+    margin-right: auto;
+}
+
+.card-agelimit {
+    border-radius: 20px;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+    height: fit-content;
+    margin-left: 10px;
+    display: flex;
+    padding-right: 10px;
+    padding-left: 10px;
+    background-color: rgba(98, 0, 255, 0.178);
+    border: rgb(98, 0, 255) solid 1px;
+}
+
+.card-agelimit > h5 {
+    font-size: 17px;
+    color: white;
+    font-weight: 400;
+}
+
+.card-slots {
+    width: 100%;
+    margin-bottom: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 5px;
+    flex-direction: column;
+    align-items: center;
+    height: fit-content;
+}
+
+.no-slots {
+    color: white;
+}
+
+.card-slot-container {
+    width: 100%;
+    height: fit-content;
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.date-picker {
+    width: 40%;
+    border-radius: 5px;
+    outline: none;
+    border: none;
+    height: 40px;
+    font-size: 15px;
+    margin-right: 5px;
+}
+
+.district-select {
+    width: 40%;
+    border-radius: 5px;
+    outline: none;
+    border: none;
+    height: 40px;
+    background-color: white;
+    font-size: 17px;
+    margin-left: 5px;
+}
+
+.search-container {
+    width: 95%;
+    border-radius: 20px;
+    margin-left: auto;
+    padding: 2px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(24, 24, 24);
+    margin-right: auto;
+    height: 15%;
+}
+
+.contents {
+    height: 90%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+}
+
+.slot {
+    border-radius: 15px;
+    height: fit-content;
+    padding: 3px;
+    font-size: 12px;
+    margin-right: 2px;
+    margin-left: 2px;
+    width: fit-content;
+    color: white;
+    font-weight: 400;
+    background-color: rgba(167, 250, 0, 0.267);
+    border: 1px solid rgb(0, 250, 0);
+}

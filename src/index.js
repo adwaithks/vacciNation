@@ -4,11 +4,14 @@ import './index.css';
 import App from './App';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';
+import ContentProvider from './context/ContentContext';
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  <ContentProvider>
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>
+  </ContentProvider>,
   document.getElementById('root')
 );
 
