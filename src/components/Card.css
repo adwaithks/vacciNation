@@ -13,7 +13,6 @@
     height: fit-content;
     margin-left: auto;
     margin-right: auto;
-    cursor: pointer;
     border-radius: 5px;
     border: rgb(0, 255, 0) solid 1px;
     background-color: rgba(165, 247, 0, 0.123);
@@ -28,7 +27,6 @@
     height: fit-content;
     margin-left: auto;
     margin-right: auto;
-    cursor: pointer;
     border-radius: 5px;
     border: red solid 1px;
     background-color: rgba(255, 0, 0, 0.123);
@@ -76,6 +74,12 @@ span {
 h2 {
     color: white;
     font-weight: 550;
+}
+
+.goto-cowin {
+    color: rgb(221, 221, 221);
+    margin-left: 5px;
+    font-size: 25px !important ;
 }
 
 .card-name {
@@ -152,7 +156,7 @@ h2 {
 }
 
 .card-slot-container {
-    width: 100%;
+    width: 500px;
     height: fit-content;
     margin-top: 10px;
     display: flex;
@@ -213,7 +217,37 @@ h2 {
     background-color: rgba(255, 255, 255, 0.171);
 }
 
+.dose1 {
+    background-color: rgba(255, 166, 0, 0.164);
+    margin-right: 5px;
+    border: orange solid 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+}
+
+.dose2 {
+    background-color: rgba(255, 166, 0, 0.164);
+    border: orange solid 1px;
+    width: fit-content;
+}
+
+.card-doseamount {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: fit-content;
+}
+
 .card-expand:hover {
+    opacity: 0.7;
+    cursor: pointer;
+}
+
+.card-collapse:hover {
+    cursor: pointer;
     opacity: 0.7;
 }
 

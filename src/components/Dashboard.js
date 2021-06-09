@@ -1,7 +1,9 @@
-import React, { useEffect , useContext } from 'react';
+import React, { useEffect , useState,useContext } from 'react';
 import Card from './Card';
 import './Dashboard.css';
 import { ContentContext } from '../context/ContentContext';
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+import Loader from "react-loader-spinner";
 
 const districts = [
     {district_id:301,district_name:"Alappuzha"},
@@ -40,6 +42,7 @@ const districtMap = {
 function Dashboard() {
 
     useEffect(() => {
+        setLoaderVisibility(true);
         findByDistrict();
     }, []);
 
@@ -47,9 +50,14 @@ function Dashboard() {
     const {date, 
         setDate,
         district, setDistrict,
-        centers, setCenters} = useContext(ContentContext);
+        centers, setCenters,
+    onlyAvailable, setOnlyAvailable} = useContext(ContentContext);
+    
+    const [loaderVisibility, setLoaderVisibility] = useState(false);
 
     const findByDistrict = async () => {
+        console.log('date: ' + date);
+        console.log('district: ' + district);
         if (date === '') {
             let today = new Date();
             let dd = String(today.getDate()).padStart(2, '0');
@@ -66,23 +74,26 @@ function Dashboard() {
             },
         });
         const response = await res.json();
+        setLoaderVisibility(false);
+        console.log(response.sessions);
         setCenters(response.sessions);
     }
 
     return (
         <div className="dashboard">
             <div className="search-container">
+                <div className="search-fields">
                 <input className="date-picker" placeholder={date} type="date" onChange={(e) => {
                     let dateFormatting = e.target.value.split("-");
                     let date = dateFormatting[2] + '-' + dateFormatting[1] + '-' + dateFormatting[0]
                     window.localStorage.setItem('date', date);
                     setDate(date);
-                    findByDistrict();
+                    
                 }} />
                 <select className="district-select" onChange={(e) => {
                     setDistrict(e.target.value);
                     window.localStorage.setItem('district', e.target.value);
-                    findByDistrict();
+                    
                 }}>
                     {
                         districts.map(eachDistrict => (
@@ -90,15 +101,42 @@ function Dashboard() {
                         ))
                     }
                     
-                </select>
+                    </select>
+                </div>
+                <div className="available-checkbox-container">
+                <input type="checkbox" onChange={(e) => {
+                    setOnlyAvailable(e.target.checked);
+                    }} />
+                    <h5>Show only available slots ?</h5>
+                    </div>
+                <div className="find-btn-container">
+                    <button className="find-btn" onClick={() => {
+                    setLoaderVisibility(true);
+                    findByDistrict();
+                    }}>Find Slots</button>
+                    </div>
             </div>
 
-            
+            <Loader
+            className="loader"
+            type="Bars"
+            color="rgba(226, 226, 226, 0.589)"
+            height={80}
+            width={80}
+            visible={loaderVisibility}
+            />
             <div className="contents">
                 {
-                    centers.length !== 0 ? (
+                    (centers.length !== 0 && onlyAvailable === false) ? (
                         centers.map((eachCenter, id) => (
                             <Card key={id} eachCenter={eachCenter} />
+                        ))
+                    ) : (centers.length !== 0 && onlyAvailable === true) ? (
+                            centers.map((eachCenter, id) => (
+                                eachCenter.available_capacity > 0 ? (
+                                    <Card key={id} eachCenter={eachCenter} />
+                                ) : null
+                            
                         ))
                     ) : (
                             <h1 className="no-slots">No slots for {districtMap[district]} on {date}</h1>

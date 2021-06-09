@@ -1,7 +1,9 @@
 import React, {useState, useEffect} from 'react';
-import './Auth.css';
 import { sha256 } from 'js-sha256';
-import {withRouter} from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
+import './Auth.css';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const generateOTP_URI = '/api/v2/auth/public/generateOTP';
 const confirmOTP_URI = '/api/v2/auth/public/confirmOTP';
@@ -114,28 +116,48 @@ function Auth(props) {
     }
 
     return (
-        <div>
+        <div className="auth">
+            <ToastContainer
+                position="top-center"
+                autoClose={3000}
+                hideProgressBar
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover={false}
+                />
             {
                 waitingForOTP ? (
-                    <main>
-                        <input value={otp} onChange={(e) => {
+                    <div className="auth-confirmotp">
+                        <input placeholder="Enter OTP" value={otp} onChange={(e) => {
                             setOTP(e.target.value)
                         }} type="text" autoComplete="one-time-code" required />
                         <button onClick={(e) => {
                             e.preventDefault();
                             confirmOTPHandler();
                         }}>Login</button>
-                    </main>
+                    </div>
                 ) : (
-                    <main>
-                        <input value={mobileNumber} onChange={(e) => {
+                    <div className="auth-getotp">
+                        <input autoComplete="on" placeholder="Enter mobile number (1234567890)" value={mobileNumber} onChange={(e) => {
                             setMobileNumber(e.target.value);
-                        }} type="text" />
+                        }} type="text" required />
                         <button onClick={(e) => {
-                            e.preventDefault();
+                                e.preventDefault();
+                                toast.success('Please check your inbox for OTP !', {
+                                    position: "top-center",
+                                    autoClose: 4000,
+                                    hideProgressBar: true,
+                                    closeOnClick: true,
+                                    pauseOnHover: false,
+                                    draggable: true,
+                                    progress: undefined,
+                                    });
                             getOTPHandler();
                         }}>Get OTP</button>
-                    </main>
+                    </div>
                 )
             }
         </div>

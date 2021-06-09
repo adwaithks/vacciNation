@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
 import './Card.css';
-
+import { Link } from 'react-router-dom';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 function twelveHourConvert (time) {
     // Check correct time format and split into components
@@ -23,7 +24,9 @@ function Card({eachCenter}) {
         <div className={eachCenter.available_capacity > 0 ? 'card-available' : 'card-unavailable'}>
             <div className="card-name">
                 <h2>{eachCenter.name}</h2>
-                
+                <ExitToAppIcon className="goto-cowin" onClick={() => {
+                    window.open('https://selfregistration.cowin.gov.in/appointment', '_blank')
+                }}></ExitToAppIcon>
             </div>
             <div className="card-preview">
             <div className="card-agelimit">
@@ -50,9 +53,13 @@ function Card({eachCenter}) {
                     <div className="card-address"><h4><span>Address: </span> {eachCenter.address}</h4></div>
                     <div className="card-blockname"><h4><span>Block: </span>{eachCenter.block_name}</h4></div>
                     <div className="card-date"><h4><span>Date: </span>{eachCenter.date}</h4></div>
-                    <div className="card-time"><h4><span>Time: </span>{twelveHourConvert(eachCenter.from)} - {twelveHourConvert(eachCenter.to)}</h4></div>
+                    <div className="card-time"><h4><span>Timing: </span>{twelveHourConvert(eachCenter.from)} - {twelveHourConvert(eachCenter.to)}</h4></div>
                     <div className="card-feetype"><h4><span>Fee Type:</span> {eachCenter.fee_type}</h4></div>
                     <div className="card-vaccine"><h4><span>Vaccine:</span> {eachCenter.vaccine.toUpperCase()}</h4></div>
+                    <div className="card-doseamount">
+                                <span className="dose1">Dose 1 available: { eachCenter.available_capacity_dose1 }</span>
+                                <span className="dose2">Dose 2 available: { eachCenter.available_capacity_dose2 }</span>
+                    </div>
                     <div className="card-slots">
                     <span>Available Slots</span>
         

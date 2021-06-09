@@ -1,64 +1,12 @@
 .dashboard {
-    width: 100vw;
+    width: 100%;
     height: 100%;
     background-color: rgb(0, 0, 0);
-}
-
-.card-available {
-    width: 95%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 10px;
-    height: fit-content;
-    margin-left: auto;
-    margin-right: auto;
-    cursor: pointer;
-    border-radius: 5px;
-    border: rgb(0, 255, 0) solid 1px;
-    background-color: rgba(165, 247, 0, 0.123);
-}
-
-.card-unavailable {
-    width: 95%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 10px;
-    height: fit-content;
-    margin-left: auto;
-    margin-right: auto;
-    cursor: pointer;
-    border-radius: 5px;
-    border: red solid 1px;
-    background-color: rgba(255, 0, 0, 0.123);
 }
 
 h4 {
     font-weight: 400;
     color: white;
-}
-
-.card-available-label {
-    border: green solid 1px;
-    background-color: rgba(165, 247, 0, 0.219);
-    font-weight: 400;
-    border-radius: 20px;
-    padding-left: 5px;
-    padding-right: 5px;
-    color: white;
-    margin-left: 2px;
-}
-
-.card-unavailable-label {
-    border: red solid 1px;
-    background-color: rgba(255, 0, 0, 0.123);
-    font-weight: 400;
-    border-radius: 20px;
-    padding-left: 5px;
-    padding-right: 5px;
-    color: white;
-    margin-left: 2px;
 }
 
 span {
@@ -78,112 +26,65 @@ h2 {
     font-weight: 550;
 }
 
-.card-name {
-    margin-top: 10px;
-    width: 95%;
-    font-weight: 800;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-left: auto;
-    margin-bottom: 10px;
-    margin-right: auto;
-}
-
-.card-address {
-    margin-top: 10px;
-    width: 95%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-left: auto;
-    margin-bottom: 10px;
-    margin-right: auto;
-}
-
-.card-blockname,
-.card-time,
-.card-date,
-.card-feetype,
-.card-vaccine {
-    width: 95%;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-left: auto;
-    margin-bottom: 10px;
-    margin-right: auto;
-}
-
-.card-agelimit {
-    border-radius: 20px;
-    align-items: center;
-    justify-content: center;
-    width: fit-content;
-    height: fit-content;
-    margin-left: 10px;
-    display: flex;
-    padding-right: 10px;
-    padding-left: 10px;
-    background-color: rgba(98, 0, 255, 0.178);
-    border: rgb(98, 0, 255) solid 1px;
-}
-
-.card-agelimit > h5 {
-    font-size: 17px;
-    color: white;
-    font-weight: 400;
-}
-
-.card-slots {
-    width: 100%;
-    margin-bottom: 10px;
-    display: flex;
-    flex-wrap: wrap;
-    margin-top: 5px;
-    flex-direction: column;
-    align-items: center;
-    height: fit-content;
-}
-
 .no-slots {
     color: white;
 }
 
-.card-slot-container {
-    width: 100%;
-    height: fit-content;
-    margin-top: 10px;
-    display: flex;
-    justify-content: space-evenly;
-}
-
 .date-picker {
-    width: 40%;
+    width: 50%;
     border-radius: 5px;
     outline: none;
+    background-color: rgba(0, 0, 0, 0.26);
+    border: rgb(87, 87, 87) solid 1px;
+    color: white;
     border: none;
     height: 40px;
-    font-size: 15px;
+    font-size: 16px;
     margin-right: 5px;
 }
 
-.district-select {
-    width: 40%;
+.date-picker::-webkit-calendar-picker-indicator {
+    background-color: rgb(82, 82, 82);
+    border: rgb(143, 143, 143) solid 1px;
     border-radius: 5px;
+}
+
+.date-picker::-webkit-datetime-edit {
+    padding-left: 2px;
+    width: 100%;
+}
+
+.available-checkbox-container {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.available-checkbox-container > h5 {
+    color: white;
+    margin-left: 5px;
+    font-weight: 400;
+}
+
+.district-select {
+    width: 50%;
+    border-radius: 5px;
+    background-color: rgba(0, 0, 0, 0.26);
+    border: rgb(87, 87, 87) solid 1px;
+    color: white;
     outline: none;
     border: none;
     height: 40px;
-    background-color: white;
     font-size: 17px;
     margin-left: 5px;
 }
 
 .search-container {
     width: 95%;
-    border-radius: 20px;
+    border-radius: 5px;
     margin-left: auto;
+    display: flex;
+    flex-direction: column;
     padding: 2px;
     margin-top: 10px;
     margin-bottom: 20px;
@@ -193,6 +94,43 @@ h2 {
     background-color: rgb(24, 24, 24);
     margin-right: auto;
     height: 15%;
+}
+
+.search-fields {
+    display: flex;
+    margin-top: 10px;
+    width: 90%;
+    align-items: center;
+    justify-content: center;
+}
+.find-btn-container {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.loader {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%);
+    top: 30%;
+}
+.find-btn {
+    width: 50%;
+    font-size: 16px;
+    background-color: rgba(0, 0, 0, 0.26);
+    border: rgb(87, 87, 87) solid 1px;
+    color: white;
+    border-radius: 5px;
+    height: 38px;
+    margin-bottom: 10px;
+    margin-top: 20px;
+}
+
+.find-btn:hover {
+    opacity: 0.7;
+    cursor: pointer;
 }
 
 .contents {
