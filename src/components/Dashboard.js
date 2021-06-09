@@ -1,6 +1,7 @@
 import React, { useEffect , useState,useContext } from 'react';
 import Card from './Card';
 import './Dashboard.css';
+import SearchIcon from '@material-ui/icons/Search';
 import { ContentContext } from '../context/ContentContext';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Loader from "react-loader-spinner";
@@ -78,12 +79,12 @@ function Dashboard() {
         console.log(response.sessions);
         setCenters(response.sessions);
     }
-
+    console.log(date.replace('-', '/'));
     return (
         <div className="dashboard">
             <div className="search-container">
                 <div className="search-fields">
-                <input className="date-picker" placeholder={date} type="date" onChange={(e) => {
+                <input className="date-picker" placeholder='dd/MM/yyyy' type="date" onChange={(e) => {
                     let dateFormatting = e.target.value.split("-");
                     let date = dateFormatting[2] + '-' + dateFormatting[1] + '-' + dateFormatting[0]
                     window.localStorage.setItem('date', date);
@@ -110,10 +111,11 @@ function Dashboard() {
                     <h5>Show only available slots ?</h5>
                     </div>
                 <div className="find-btn-container">
+                    
                     <button className="find-btn" onClick={() => {
                     setLoaderVisibility(true);
                     findByDistrict();
-                    }}>Find Slots</button>
+                    }}><SearchIcon className="search-icon" />Find Slots</button>
                     </div>
             </div>
 
