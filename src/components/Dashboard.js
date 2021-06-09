@@ -1,10 +1,11 @@
-import React, { useEffect , useState,useContext } from 'react';
+import React, { useEffect, useState,useContext } from 'react';
 import Card from './Card';
 import './Dashboard.css';
 import SearchIcon from '@material-ui/icons/Search';
 import { ContentContext } from '../context/ContentContext';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Loader from "react-loader-spinner";
+
 
 const districts = [
     {district_id:301,district_name:"Alappuzha"},
@@ -41,10 +42,24 @@ const districtMap = {
 }
 
 function Dashboard() {
-
     useEffect(() => {
+        if (Notification.permission === false) {
+            requestNotifPerm();
+        }
+        window.localStorage.setItem('district', '301');
+        let today = new Date();
+            let dd = String(today.getDate()).padStart(2, '0');
+            let mm = String(today.getMonth() + 1).padStart(2, '0'); 
+            let yyyy = today.getFullYear();
+        let currentDate = dd + '-' + mm + '-' + yyyy;
+        window.localStorage.setItem('date', currentDate);
         setLoaderVisibility(true);
         findByDistrict();
+        const perm = async () => {
+            let permission = await Notification.requestPermission();
+            console.log(permission);
+        }
+        if (Notification.permssion === false) { perm(); }
     }, []);
 
 
@@ -52,9 +67,15 @@ function Dashboard() {
         setDate,
         district, setDistrict,
         centers, setCenters,
-    onlyAvailable, setOnlyAvailable} = useContext(ContentContext);
-    
+    onlyAvailable, setOnlyAvailable, availCenters, setAvailCenters} = useContext(ContentContext);
     const [loaderVisibility, setLoaderVisibility] = useState(false);
+
+
+    const requestNotifPerm = () => {
+        Notification.requestPermission(function (status) {
+            console.log('notif perm: ' + status);
+        });
+    }
 
     const findByDistrict = async () => {
         console.log('date: ' + date);
@@ -67,7 +88,7 @@ function Dashboard() {
             let currentDate = dd + '-' + mm + '-' + yyyy;
             setDate(currentDate);
         }
-        const uri = `https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByDistrict?district_id=${district}&date=${date}`;
+        const uri = `https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByDistrict?district_id=${window.localStorage.getItem('district')}&date=${window.localStorage.getItem('date')}`;
         const res = await fetch(uri, {
             method: 'GET',
             headers: {
@@ -75,26 +96,34 @@ function Dashboard() {
             },
         });
         const response = await res.json();
+        function checkAvailability(each) {
+            return each.available_capacity > 0;
+          }
+          
         setLoaderVisibility(false);
         console.log(response.sessions);
         setCenters(response.sessions);
+        console.log(response.sessions.filter(checkAvailability))
+        setAvailCenters(response.sessions.filter(checkAvailability));
     }
-    console.log(date.replace('-', '/'));
+
     return (
         <div className="dashboard">
             <div className="search-container">
                 <div className="search-fields">
-                <input className="date-picker" placeholder='dd/MM/yyyy' type="date" onChange={(e) => {
+                    <input className="date-picker" placeholder='dd/MM/yyyy' type="date" onChange={(e) => {
                     let dateFormatting = e.target.value.split("-");
                     let date = dateFormatting[2] + '-' + dateFormatting[1] + '-' + dateFormatting[0]
                     window.localStorage.setItem('date', date);
                     setDate(date);
-                    
+                    setLoaderVisibility(true);
+                    findByDistrict();
                 }} />
                 <select className="district-select" onChange={(e) => {
                     setDistrict(e.target.value);
-                    window.localStorage.setItem('district', e.target.value);
-                    
+                        window.localStorage.setItem('district', e.target.value);
+                        setLoaderVisibility(true);
+                    findByDistrict();
                 }}>
                     {
                         districts.map(eachDistrict => (
@@ -104,15 +133,14 @@ function Dashboard() {
                     
                     </select>
                 </div>
-                <div className="available-checkbox-container">
-                <input type="checkbox" onChange={(e) => {
-                    setOnlyAvailable(e.target.checked);
-                    }} />
+                <div className="available-checkbox-container"  onChange={() => {
+                        setOnlyAvailable(!onlyAvailable);
+                    }} >
+                <input checked={onlyAvailable} type="checkbox"/>
                     <h5>Show only available slots ?</h5>
                     </div>
                 <div className="find-btn-container">
-                    
-                    <button className="find-btn" onClick={() => {
+                    <button  className="find-btn" onClick={() => {
                     setLoaderVisibility(true);
                     findByDistrict();
                     }}><SearchIcon className="search-icon" />Find Slots</button>
@@ -134,16 +162,13 @@ function Dashboard() {
                             <Card key={id} eachCenter={eachCenter} />
                         ))
                     ) : (centers.length !== 0 && onlyAvailable === true) ? (
-                            centers.map((eachCenter, id) => (
-                                eachCenter.available_capacity > 0 ? (
+                        availCenters.length !== 0 ? (
+                            availCenters.map((eachCenter, id) => (
                                     <Card key={id} eachCenter={eachCenter} />
-                                ) : null
-                            
-                        ))
+                            ))) : <h1 className="no-slots">No slots for {districtMap[district]} on {date}</h1>
                     ) : (
                             <h1 className="no-slots">No slots for {districtMap[district]} on {date}</h1>
                     )
-                
                 }
             </div>
             

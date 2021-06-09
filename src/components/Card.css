@@ -156,7 +156,7 @@ h2 {
 }
 
 .card-slot-container {
-    width: 500px;
+    width: 60%;
     height: fit-content;
     margin-top: 10px;
     display: flex;
@@ -271,4 +271,34 @@ h2 {
     font-weight: 400;
     background-color: rgba(167, 250, 0, 0.267);
     border: 1px solid rgb(0, 250, 0);
+}
+
+@media (max-width: 815px) {
+    .card-slot-container {
+        width: 70%;
+        height: fit-content;
+        margin-top: 10px;
+        display: flex;
+        justify-content: space-evenly;
+    }
+}
+
+@media (max-width: 680px) {
+    .card-slot-container {
+        width: 90%;
+        height: fit-content;
+        margin-top: 10px;
+        display: flex;
+        justify-content: space-evenly;
+    }
+}
+
+@media (max-width: 534px) {
+    .card-slot-container {
+        width: 100%;
+        height: fit-content;
+        margin-top: 10px;
+        display: flex;
+        justify-content: space-evenly;
+    }
 }

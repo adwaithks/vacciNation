@@ -14,14 +14,16 @@ const ContentProvider = ({children}) => {
     const [district, setDistrict] = useState(301);
     const [centers, setCenters] = useState([]);
     const [onlyAvailable, setOnlyAvailable] = useState(false);
-
+    const [availCenters, setAvailCenters] = useState([]);
+    
     return (
         <ContentContext.Provider value={{
             date, 
             setDate,
             district, setDistrict,
             centers, setCenters,
-            onlyAvailable, setOnlyAvailable
+            onlyAvailable, setOnlyAvailable,
+            availCenters, setAvailCenters
         }}>{children}</ContentContext.Provider>
     )
 }

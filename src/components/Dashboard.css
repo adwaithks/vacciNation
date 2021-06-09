@@ -27,7 +27,18 @@ h2 {
 }
 
 .no-slots {
-    color: white;
+    color: rgb(241, 241, 241);
+    position: absolute;
+    border-radius: 5px;
+    top: 40%;
+    background-color: rgba(80, 80, 80, 0.349);
+    border: rgba(158, 158, 158, 0.651) solid 1px;
+    padding: 10px;
+    left: 50%;
+    font-weight: 400;
+    width: 90%;
+    font-size: 20px;
+    transform: translate(-50%);
 }
 
 .date-picker {
