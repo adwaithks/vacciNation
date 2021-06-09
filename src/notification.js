@@ -1,5 +1,5 @@
-import { ContentContext } from '../context/ContentContext';
-import React, { useContext } from 'react';
+import { ContentContext } from './context/ContentContext';
+import { useContext } from 'react';
 
 let districtDataNew = [];
 
