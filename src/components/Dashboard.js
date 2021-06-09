@@ -46,11 +46,13 @@ function Dashboard() {
         if (Notification.permission === false) {
             requestNotifPerm();
         }
-        window.localStorage.setItem('district', '301');
+        if (!window.localStorage.getItem('district')) {
+            window.localStorage.setItem('district', '301');
+        }
         let today = new Date();
-            let dd = String(today.getDate()).padStart(2, '0');
-            let mm = String(today.getMonth() + 1).padStart(2, '0'); 
-            let yyyy = today.getFullYear();
+        let dd = String(today.getDate()).padStart(2, '0');
+        let mm = String(today.getMonth() + 1).padStart(2, '0'); 
+        let yyyy = today.getFullYear();
         let currentDate = dd + '-' + mm + '-' + yyyy;
         window.localStorage.setItem('date', currentDate);
         setLoaderVisibility(true);
@@ -59,7 +61,19 @@ function Dashboard() {
             let permission = await Notification.requestPermission();
             console.log(permission);
         }
+        const perm2 = async () => {
+            const status = await navigator.permissions.query({
+                name: 'periodic-background-sync',
+            });
+            if (status.state === 'granted') {
+                console.log('periodic sync granted');
+            } else {
+                console.log('periodic sync ' + status.state);
+            }
+        }
         if (Notification.permssion === false) { perm(); }
+
+        perm2();
     }, []);
 
 
@@ -103,8 +117,9 @@ function Dashboard() {
         setLoaderVisibility(false);
         console.log(response.sessions);
         setCenters(response.sessions);
-        console.log(response.sessions.filter(checkAvailability))
+        console.log(response.sessions.filter(checkAvailability));
         setAvailCenters(response.sessions.filter(checkAvailability));
+        window.localStorage.setItem('availCenters', JSON.stringify(response.sessions.filter(checkAvailability)));
     }
 
     return (
@@ -136,7 +151,9 @@ function Dashboard() {
                 <div className="available-checkbox-container"  onChange={() => {
                         setOnlyAvailable(!onlyAvailable);
                     }} >
-                <input checked={onlyAvailable} type="checkbox"/>
+                    <input checked={onlyAvailable} onChange={(e) => {
+                        setOnlyAvailable(e.target.checked);
+                    }}type="checkbox"/>
                     <h5>Show only available slots ?</h5>
                     </div>
                 <div className="find-btn-container">

@@ -1,3 +1,26 @@
+self.addEventListener('periodicsync', event => {
+    console.log('periodicsync called')
+    if (event.tag == 'get-latest-slots') {
+      event.waitUntil(fetchAndCacheLatestNews());
+    }
+});
+
+const fetchAndCacheLatestNews = () => {
+    console.log('calling notification fun')
+    notification();
+}
+
+
+
+self.addEventListener('install', (e) => {
+    console.log('[Service Worker] Install');
+});
+
+self.addEventListener('fetch', function(event) {
+    console.log('Fetching data')
+});
+  
+
 let districtDataNew = [];
 
 function checkAvailability(each) {
@@ -44,6 +67,7 @@ const notification = () => {
     districtDataNew.map(newEntry => {
         let result = checkFor(newEntry);
         if (result && Notification.permission === true) {
+            console.log('new slot::' + newEntry.name.split('-')[0] + newEntry.address);
             navigator.serviceWorker.getRegistration().then(function (reg) {
                 var options = {
                     body: `${newEntry.address}`,
@@ -57,3 +81,6 @@ const notification = () => {
         }
     })
 }
+
+
+
