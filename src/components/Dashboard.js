@@ -1,4 +1,4 @@
-import React, { useEffect, useState,useContext } from 'react';
+import React, { useEffect, useState, useRef, useContext } from 'react';
 import Card from './Card';
 import './Dashboard.css';
 import AutorenewIcon from '@material-ui/icons/Autorenew';import { ContentContext } from '../context/ContentContext';
@@ -42,11 +42,7 @@ const districtMap = {
 
 function Dashboard() {
     useEffect(() => {
-        if (Notification.permission === false) {
-            requestNotifPerm();
-        }
         window.localStorage.setItem('district', '301');
-        
         window.localStorage.setItem('wwstatus', 'uninit')
         let today = new Date();
         let dd = String(today.getDate()).padStart(2, '0');
@@ -58,7 +54,7 @@ function Dashboard() {
         findByDistrict();
         const perm = async () => {
             let permission = await Notification.requestPermission();
-            console.log('notification: ' + permission);
+            console.log('Notification permission: ' + permission);
         }
         if (Notification.permssion !== 'granted') {
             perm();
@@ -72,40 +68,13 @@ function Dashboard() {
         centers, setCenters,
         onlyAvailable, setOnlyAvailable, availCenters, setAvailCenters} = useContext(ContentContext);
     const [loaderVisibility, setLoaderVisibility] = useState(false);
+    const dateRef = useRef(null);
 
-    /*const spawnWebWorker = () => {
-        if (!window.Worker || window.localStorage.getItem('wwstatus') === 'running' || window.localStorage.getItem('availCenters') === []) {
-            console.log('returned')
-            return;
-        }
-        window.localStorage.setItem('wwstatus', 'running');
-        const worker1 = new Worker(`${process.env.PUBLIC_URL}/web-worker.js`);
-        console.log('worker started running now...')
-        worker1.onmessage = function (e) {
-            switch (e.data) {
-                case 'finished':
-                    worker1.terminate();
-                    window.localStorage.setItem('wwstatus', 'finished');
-                    console.log('worker terminated')
-            }
-    
-        }
-        worker1.postMessage({
-            centers: availCenters,
-            token: window.localStorage.getItem('token'),
-            district: window.localStorage.getItem('district')
-        });
-    }*/
 
-    const requestNotifPerm = () => {
-        Notification.requestPermission(function (status) {
-            console.log('notif perm: ' + status);
-        });
-    }
 
     const findByDistrict = async () => {
-        console.log('date: ' + date);
-        console.log('district: ' + district);
+        //console.log('date: ' + date);
+        //console.log('district: ' + district);
         if (date === '') {
             let today = new Date();
             let dd = String(today.getDate()).padStart(2, '0');
@@ -116,10 +85,7 @@ function Dashboard() {
         }
         const uri = `https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByDistrict?district_id=${window.localStorage.getItem('district')}&date=${window.localStorage.getItem('date')}`;
         const res = await fetch(uri, {
-            method: 'GET',
-            headers: {
-                'Authorization': 'Bearer ' + window.localStorage.getItem('token'),
-            },
+            method: 'GET'
         });
         const response = await res.json();
         function checkAvailability(each) {
@@ -127,13 +93,10 @@ function Dashboard() {
           }
           
         setLoaderVisibility(false);
-        console.log(response.sessions);
+        //console.log(response.sessions);
         setCenters(response.sessions);
-        console.log(response.sessions.filter(checkAvailability));
+        //console.log(response.sessions.filter(checkAvailability));
         setAvailCenters(response.sessions.filter(checkAvailability));
-        /*if (response.sessions.filter(checkAvailability).length > 0) {
-            spawnWebWorker();
-         }*/
         window.localStorage.setItem('availCenters', JSON.stringify(response.sessions.filter(checkAvailability)));
     }
 
@@ -141,7 +104,9 @@ function Dashboard() {
         <div className="dashboard">
             <div className="search-container">
                 <div className="search-fields">
-                    <input className="date-picker" placeholder='dd/MM/yyyy' type="date" onChange={(e) => {
+                    <input ref={dateRef} className="date-picker" placeholder='Today' type="text" onFocus={() => {
+                        dateRef.current.type = 'date';
+                    }} onChange={(e) => {
                     let dateFormatting = e.target.value.split("-");
                     let date = dateFormatting[2] + '-' + dateFormatting[1] + '-' + dateFormatting[0]
                     window.localStorage.setItem('date', date);
@@ -163,12 +128,10 @@ function Dashboard() {
                     
                     </select>
                 </div>
-                <div className="available-checkbox-container"  onChange={() => {
+                <div className="available-checkbox-container" onClick={(e) => {
                         setOnlyAvailable(!onlyAvailable);
                     }} >
-                    <input checked={onlyAvailable} onChange={(e) => {
-                        setOnlyAvailable(e.target.checked);
-                    }}type="checkbox"/>
+                    <input checked={onlyAvailable} type="checkbox"/>
                     <h5>Show only available slots ?</h5>
                     </div>
                 <div className="find-btn-container">
