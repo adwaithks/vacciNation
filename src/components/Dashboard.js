@@ -1,8 +1,7 @@
 import React, { useEffect, useState,useContext } from 'react';
 import Card from './Card';
 import './Dashboard.css';
-import SearchIcon from '@material-ui/icons/Search';
-import { ContentContext } from '../context/ContentContext';
+import AutorenewIcon from '@material-ui/icons/Autorenew';import { ContentContext } from '../context/ContentContext';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Loader from "react-loader-spinner";
 
@@ -46,9 +45,8 @@ function Dashboard() {
         if (Notification.permission === false) {
             requestNotifPerm();
         }
-        if (!window.localStorage.getItem('district')) {
-            window.localStorage.setItem('district', '301');
-        }
+        window.localStorage.setItem('district', '301');
+        
         window.localStorage.setItem('wwstatus', 'uninit')
         let today = new Date();
         let dd = String(today.getDate()).padStart(2, '0');
@@ -60,9 +58,11 @@ function Dashboard() {
         findByDistrict();
         const perm = async () => {
             let permission = await Notification.requestPermission();
-            console.log(permission);
+            console.log('notification: ' + permission);
         }
-        if (Notification.permssion === false) { perm(); }
+        if (Notification.permssion === 'denied') {
+            perm();
+        }
     }, []);
 
 
@@ -73,18 +73,19 @@ function Dashboard() {
         onlyAvailable, setOnlyAvailable, availCenters, setAvailCenters} = useContext(ContentContext);
     const [loaderVisibility, setLoaderVisibility] = useState(false);
 
-    /*const spawnWebWorker = () => {
-        if (!window.Worker || window.localStorage.getItem('wwstatus') === 'finished' || window.localStorage.getItem('availCenters') === []) {
+    const spawnWebWorker = () => {
+        if (!window.Worker || window.localStorage.getItem('wwstatus') === 'running' || window.localStorage.getItem('availCenters') === []) {
             console.log('returned')
             return;
         }
+        window.localStorage.setItem('wwstatus', 'running');
         const worker1 = new Worker(`${process.env.PUBLIC_URL}/web-worker.js`);
-        console.log('worker setup done')
+        console.log('worker started running now...')
         worker1.onmessage = function (e) {
             switch (e.data) {
                 case 'finished':
-                    window.localStorage.setItem('wwstatus', 'finished');
                     worker1.terminate();
+                    window.localStorage.setItem('wwstatus', 'finished');
                     console.log('worker terminated')
             }
     
@@ -94,7 +95,7 @@ function Dashboard() {
             token: window.localStorage.getItem('token'),
             district: window.localStorage.getItem('district')
         });
-    }*/
+    }
 
     const requestNotifPerm = () => {
         Notification.requestPermission(function (status) {
@@ -131,8 +132,7 @@ function Dashboard() {
         console.log(response.sessions.filter(checkAvailability));
         setAvailCenters(response.sessions.filter(checkAvailability));
         if (response.sessions.filter(checkAvailability).length > 0) {
-            window.localStorage.setItem('wwstatus', 'running');
-            //spawnWebWorker();
+            spawnWebWorker();
          }
         window.localStorage.setItem('availCenters', JSON.stringify(response.sessions.filter(checkAvailability)));
     }
@@ -175,7 +175,7 @@ function Dashboard() {
                     <button  className="find-btn" onClick={() => {
                     setLoaderVisibility(true);
                     findByDistrict();
-                    }}><SearchIcon className="search-icon" />Find Slots</button>
+                    }}><AutorenewIcon className="refresh-icon" />Refresh</button>
                     </div>
             </div>
 

@@ -59,16 +59,22 @@ onmessage = function (e) {
             let result = checkFor(newEntry);
             //console.log('[+] result: ' + result + ':: '  + JSON.stringify(newEntry));
             
-            if (result && Notification.permission === 'granted') {
+            if (result === true && Notification.permission === 'granted') {
                 console.log('[++++++] NEW CENTER: ' + newEntry.name)
-                newNot = new Notification(each.center);
+                newNot = new Notification('New slot: ' + newEntry.name.split('-')[0], {
+                    body: `
+                           Address: ${newEntry.address}
+                           Available dose1: ${newEntry.available_capacity_dose1}
+                           Available dose2: ${newEntry.available_capacity_dose2}  
+                        `
+                });
             }
         })
-        if (count === 2) {
+        if (count === 3) {
             postMessage('finished');
         }
     }
     
-    setInterval(notification, 5000);   
+    setInterval(notification, 1000);   
 
 }
