@@ -73,7 +73,7 @@ function Dashboard() {
         onlyAvailable, setOnlyAvailable, availCenters, setAvailCenters} = useContext(ContentContext);
     const [loaderVisibility, setLoaderVisibility] = useState(false);
 
-    const spawnWebWorker = () => {
+    /*const spawnWebWorker = () => {
         if (!window.Worker || window.localStorage.getItem('wwstatus') === 'running' || window.localStorage.getItem('availCenters') === []) {
             console.log('returned')
             return;
@@ -95,7 +95,7 @@ function Dashboard() {
             token: window.localStorage.getItem('token'),
             district: window.localStorage.getItem('district')
         });
-    }
+    }*/
 
     const requestNotifPerm = () => {
         Notification.requestPermission(function (status) {
@@ -131,9 +131,9 @@ function Dashboard() {
         setCenters(response.sessions);
         console.log(response.sessions.filter(checkAvailability));
         setAvailCenters(response.sessions.filter(checkAvailability));
-        if (response.sessions.filter(checkAvailability).length > 0) {
+        /*if (response.sessions.filter(checkAvailability).length > 0) {
             spawnWebWorker();
-         }
+         }*/
         window.localStorage.setItem('availCenters', JSON.stringify(response.sessions.filter(checkAvailability)));
     }
 
