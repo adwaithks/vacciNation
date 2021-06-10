@@ -36,13 +36,9 @@ export function register(config) {
         // This is running on localhost. Let's check if a service worker still exists or not.
         checkValidServiceWorker(swUrl, config);
         
-        registerPeriodicNewsCheck();
         // Add some additional logging to localhost, pointing developers to the
         // service worker/PWA documentation.
-        navigator.serviceWorker.ready.then((registration) => {
-          registration.periodicSync.getTags().then(tags => {
-            console.log('tags: ' + tags);
-          });
+        navigator.serviceWorker.ready.then(() => {
           console.log(
             'This web app is being served cache-first by a service ' +
               'worker. To learn more, visit https://cra.link/PWA'
@@ -50,22 +46,9 @@ export function register(config) {
         });
       } else {
         // Is not localhost. Just register service worker
-        registerPeriodicNewsCheck();
         registerValidSW(swUrl, config);
       }
     });
-  }
-}
-
-async function registerPeriodicNewsCheck() {
-  const registration = await navigator.serviceWorker.ready;
-  try {
-    console.log('Periodic Sync registered!');
-    await registration.periodicSync.register('get-latest-slots', {
-      minInterval: 5000,
-    });
-  } catch {
-    console.log('Periodic Sync could not be registered!');
   }
 }
 

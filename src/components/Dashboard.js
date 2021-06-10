@@ -49,6 +49,7 @@ function Dashboard() {
         if (!window.localStorage.getItem('district')) {
             window.localStorage.setItem('district', '301');
         }
+        window.localStorage.setItem('wwstatus', 'uninit')
         let today = new Date();
         let dd = String(today.getDate()).padStart(2, '0');
         let mm = String(today.getMonth() + 1).padStart(2, '0'); 
@@ -61,19 +62,7 @@ function Dashboard() {
             let permission = await Notification.requestPermission();
             console.log(permission);
         }
-        const perm2 = async () => {
-            const status = await navigator.permissions.query({
-                name: 'periodic-background-sync',
-            });
-            if (status.state === 'granted') {
-                console.log('periodic sync granted');
-            } else {
-                console.log('periodic sync ' + status.state);
-            }
-        }
         if (Notification.permssion === false) { perm(); }
-
-        perm2();
     }, []);
 
 
@@ -81,9 +70,31 @@ function Dashboard() {
         setDate,
         district, setDistrict,
         centers, setCenters,
-    onlyAvailable, setOnlyAvailable, availCenters, setAvailCenters} = useContext(ContentContext);
+        onlyAvailable, setOnlyAvailable, availCenters, setAvailCenters} = useContext(ContentContext);
     const [loaderVisibility, setLoaderVisibility] = useState(false);
 
+    const spawnWebWorker = () => {
+        if (!window.Worker || window.localStorage.getItem('wwstatus') === 'finished' || window.localStorage.getItem('availCenters') === []) {
+            console.log('returned')
+            return;
+        }
+        const worker1 = new Worker(`${process.env.PUBLIC_URL}/web-worker.js`);
+        console.log('worker setup done')
+        worker1.onmessage = function (e) {
+            switch (e.data) {
+                case 'finished':
+                    window.localStorage.setItem('wwstatus', 'finished');
+                    worker1.terminate();
+                    console.log('worker terminated')
+            }
+    
+        }
+        worker1.postMessage({
+            centers: availCenters,
+            token: window.localStorage.getItem('token'),
+            district: window.localStorage.getItem('district')
+        });
+    }
 
     const requestNotifPerm = () => {
         Notification.requestPermission(function (status) {
@@ -119,6 +130,10 @@ function Dashboard() {
         setCenters(response.sessions);
         console.log(response.sessions.filter(checkAvailability));
         setAvailCenters(response.sessions.filter(checkAvailability));
+        if (response.sessions.filter(checkAvailability).length > 0) {
+            window.localStorage.setItem('wwstatus', 'running');
+            //spawnWebWorker();
+         }
         window.localStorage.setItem('availCenters', JSON.stringify(response.sessions.filter(checkAvailability)));
     }
 
