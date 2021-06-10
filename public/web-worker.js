@@ -50,12 +50,8 @@ onmessage = function (e) {
             console.log('Returning true for :::::: ' + center.name + ' capacity: ' + center.available_capacity);
             return true;
         }
-        if (Notification.permission === 'denied') {
-            let permission = await Notification.requestPermission();
-            console.log(permission)
-        }
     
-        districtDataNew.map(newEntry => {
+        districtDataNew.forEach(newEntry => {
             let result = checkFor(newEntry);
             //console.log('[+] result: ' + result + ':: '  + JSON.stringify(newEntry));
             
@@ -63,6 +59,7 @@ onmessage = function (e) {
                 console.log('[++++++] NEW CENTER: ' + newEntry.name)
                 newNot = new Notification('New slot: ' + newEntry.name.split('-')[0], {
                     body: `
+                           District: ${newEntry.district_name}
                            Address: ${newEntry.address}
                            Available dose1: ${newEntry.available_capacity_dose1}
                            Available dose2: ${newEntry.available_capacity_dose2}  

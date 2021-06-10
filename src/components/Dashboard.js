@@ -60,7 +60,7 @@ function Dashboard() {
             let permission = await Notification.requestPermission();
             console.log('notification: ' + permission);
         }
-        if (Notification.permssion === 'denied') {
+        if (Notification.permssion !== 'granted') {
             perm();
         }
     }, []);
