@@ -73,7 +73,7 @@ function Dashboard() {
         onlyAvailable, setOnlyAvailable, availCenters, setAvailCenters} = useContext(ContentContext);
     const [loaderVisibility, setLoaderVisibility] = useState(false);
 
-    const spawnWebWorker = () => {
+    /*const spawnWebWorker = () => {
         if (!window.Worker || window.localStorage.getItem('wwstatus') === 'finished' || window.localStorage.getItem('availCenters') === []) {
             console.log('returned')
             return;
@@ -94,7 +94,7 @@ function Dashboard() {
             token: window.localStorage.getItem('token'),
             district: window.localStorage.getItem('district')
         });
-    }
+    }*/
 
     const requestNotifPerm = () => {
         Notification.requestPermission(function (status) {
