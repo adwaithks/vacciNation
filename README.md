@@ -4,7 +4,7 @@ Easily find covid vaccine slots in kerala.
 
 ### Built around cowin API
 
-Live [https://cowinupdates.netify.app](https://cowinupdates.netify.app)
+Live [https://cowinupdates.netify.app](https://cowinupdates.netlify.app)
 
 ## Screenshot
 
