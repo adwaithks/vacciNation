@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { sha256 } from 'js-sha256';
 import { withRouter } from 'react-router-dom';
 import './Auth.css';
@@ -41,7 +41,7 @@ function Auth(props) {
         const findByDistrict = async () => {
             let today = new Date();
             let dd = String(today.getDate()).padStart(2, '0');
-            let mm = String(today.getMonth() + 1).padStart(2, '0'); 
+            let mm = String(today.getMonth() + 1).padStart(2, '0');
             let yyyy = today.getFullYear();
             let date = (mm + '-' + dd + '-' + yyyy);
             if (window.localStorage.getItem('district') && window.localStorage.getItem('token')) {
@@ -55,12 +55,12 @@ function Auth(props) {
                 });
                 if (res.status === 200) {
                     props.history.push('/dashboard');
-                }   
+                }
             } else {
                 console.log('Logged Out!')
                 return;
             }
-                    
+
         }
 
         const loggedInCheck = () => {
@@ -88,7 +88,7 @@ function Auth(props) {
         const response = await res.json();
         setWaitingForOTP(true);
         console.log(response);
-        setTxnId(response.txnId); 
+        setTxnId(response.txnId);
     }
 
     const confirmOTPHandler = async () => {
@@ -109,7 +109,7 @@ function Auth(props) {
             body: JSON.stringify(data)
         });
         const response = await res.json();
-        console.log(response);
+        console.log('response: ' + JSON.stringify(response));
         setWaitingForOTP(false);
         window.localStorage.setItem('token', response.token);
         props.history.push('/dashboard');
@@ -127,7 +127,7 @@ function Auth(props) {
                 pauseOnFocusLoss
                 draggable
                 pauseOnHover={false}
-                />
+            />
             {
                 waitingForOTP ? (
                     <div className="auth-confirmotp">
@@ -145,16 +145,16 @@ function Auth(props) {
                             setMobileNumber(e.target.value);
                         }} type="text" required />
                         <button onClick={(e) => {
-                                e.preventDefault();
-                                toast.success('Please check your inbox for OTP !', {
-                                    position: "top-center",
-                                    autoClose: 4000,
-                                    hideProgressBar: true,
-                                    closeOnClick: true,
-                                    pauseOnHover: false,
-                                    draggable: true,
-                                    progress: undefined,
-                                    });
+                            e.preventDefault();
+                            toast.success('Please check your inbox for OTP !', {
+                                position: "top-center",
+                                autoClose: 4000,
+                                hideProgressBar: true,
+                                closeOnClick: true,
+                                pauseOnHover: false,
+                                draggable: true,
+                                progress: undefined,
+                            });
                             getOTPHandler();
                         }}>Get OTP</button>
                     </div>
