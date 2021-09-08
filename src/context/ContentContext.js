@@ -23,7 +23,7 @@ const ContentProvider = ({children}) => {
             district, setDistrict,
             centers, setCenters,
             onlyAvailable, setOnlyAvailable,
-            availCenters, setAvailCenters
+            availCenters, setAvailCenters,
         }}>{children}</ContentContext.Provider>
     )
 }

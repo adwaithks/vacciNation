@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useRef, useContext } from 'react';
 import Card from './Card';
 import './Dashboard.css';
-import AutorenewIcon from '@material-ui/icons/Autorenew'; import { ContentContext } from '../context/ContentContext';
+import AutorenewIcon from '@material-ui/icons/Autorenew';
+import { ContentContext } from '../context/ContentContext';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Loader from "react-loader-spinner";
 
@@ -61,6 +62,7 @@ function Dashboard() {
         }
     }, []);
 
+    let feeTypeFilter = "All";
 
     const { date,
         setDate,
@@ -68,7 +70,9 @@ function Dashboard() {
         centers, setCenters,
         onlyAvailable, setOnlyAvailable, availCenters, setAvailCenters } = useContext(ContentContext);
     const [loaderVisibility, setLoaderVisibility] = useState(false);
+
     const dateRef = useRef(null);
+
 
 
 
@@ -89,14 +93,28 @@ function Dashboard() {
         });
         const response = await res.json();
         function checkAvailability(each) {
-            return each.available_capacity > 0;
+            if (feeTypeFilter !== 'All') {
+                return each.available_capacity > 0 && each.fee_type === feeTypeFilter;
+            } else {
+                return each.available_capacity > 0;
+            }
+
+        }
+        function allCenters(each) {
+            return each.fee_type === feeTypeFilter;
         }
 
         setLoaderVisibility(false);
         //console.log(response.sessions);
-        setCenters(response.sessions);
+        if (feeTypeFilter !== 'All') {
+            setCenters(response.sessions.filter(allCenters))
+        } else {
+            setCenters(response.sessions)
+        }
         //console.log(response.sessions.filter(checkAvailability));
         setAvailCenters(response.sessions.filter(checkAvailability));
+        //setPaidCenters(response.sessions.filter(findPaidCenters));
+        //setFreeCenters(response.sessions.filter(findFreeCenters));
         window.localStorage.setItem('availCenters', JSON.stringify(response.sessions.filter(checkAvailability)));
     }
 
@@ -135,10 +153,27 @@ function Dashboard() {
                     <h5>Show only available slots ?</h5>
                 </div>
                 <div className="find-btn-container">
+                    <div></div>
                     <button className="find-btn" onClick={() => {
                         setLoaderVisibility(true);
                         findByDistrict();
                     }}><AutorenewIcon className="refresh-icon" />Refresh</button>
+                    <div className="fee-type-filter">
+                        <button onClick={() => {
+                            setLoaderVisibility(true);
+                            findByDistrict();
+                        }} className="fee-type-option1">All</button>
+                        <button onClick={() => {
+                            feeTypeFilter  = "Free";
+                            setLoaderVisibility(true);
+                            findByDistrict();
+                        }} className="fee-type-option2">Free</button>
+                        <button onClick={() => {
+                            feeTypeFilter = "Paid";
+                            setLoaderVisibility(true);
+                            findByDistrict();
+                        }} className="fee-type-option3">Paid</button>
+                    </div>
                 </div>
             </div>
 
