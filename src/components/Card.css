@@ -44,11 +44,35 @@ h4 {
     border-radius: 20px;
     padding-left: 5px;
     padding-right: 5px;
+    margin-right: 5px;
     color: white;
     margin-left: 2px;
 }
 
 .card-unavailable-label {
+    border: red solid 1px;
+    background-color: rgba(255, 0, 0, 0.123);
+    font-weight: 400;
+    border-radius: 20px;
+    padding-left: 5px;
+    margin-right: 5px;
+    padding-right: 5px;
+    color: white;
+    margin-left: 2px;
+}
+
+.card-feetypefree-label {
+    border: green solid 1px;
+    background-color: rgba(165, 247, 0, 0.219);
+    font-weight: 400;
+    border-radius: 20px;
+    padding-left: 5px;
+    padding-right: 5px;
+    color: white;
+    margin-left: 2px;
+}
+
+.card-feetypepaid-label {
     border: red solid 1px;
     background-color: rgba(255, 0, 0, 0.123);
     font-weight: 400;
@@ -108,10 +132,8 @@ h2 {
 .card-blockname,
 .card-time,
 .card-date,
-.card-feetype,
 .card-vaccine {
     width: 95%;
-
     display: flex;
     justify-content: center;
     align-items: center;
@@ -127,6 +149,7 @@ h2 {
     width: fit-content;
     height: fit-content;
     margin-left: 10px;
+    margin-right: 5px;
     display: flex;
     padding-right: 10px;
     padding-left: 10px;
