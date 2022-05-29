@@ -54,15 +54,15 @@ function Card({ eachCenter }) {
                     ><h4>Expand</h4></div>
                 ) : (
                     <>
-                        <div className="card-address"><h4><span>Address: </span> {eachCenter.address}</h4></div>
-                        <div className="card-blockname"><h4><span>Block: </span>{eachCenter.block_name}</h4></div>
-                        <div className="card-date"><h4><span>Date: </span>{eachCenter.date}</h4></div>
-                        <div className="card-time"><h4><span>Timing: </span>{twelveHourConvert(eachCenter.from)} - {twelveHourConvert(eachCenter.to)}</h4></div>
+                        <div className="card-address"><h4><span>Address: </span> {eachCenter?.address}</h4></div>
+                        <div className="card-blockname"><h4><span>Block: </span>{eachCenter?.block_name}</h4></div>
+                        <div className="card-date"><h4><span>Date: </span>{eachCenter?.date}</h4></div>
+                        <div className="card-time"><h4><span>Timing: </span>{twelveHourConvert(eachCenter?.from)} - {twelveHourConvert(eachCenter?.to)}</h4></div>
                         {/*<div className="card-feetype"><h4><span>Fee Type:</span> {eachCenter.fee_type}</h4></div>*/}
-                        <div className="card-vaccine"><h4><span>Vaccine:</span> {eachCenter.vaccine.toUpperCase()}</h4></div>
+                        <div className="card-vaccine"><h4><span>Vaccine:</span> {eachCenter?.vaccine.toUpperCase()}</h4></div>
                         <div className="card-doseamount">
-                            <span className="dose1">Dose 1 available: {eachCenter.available_capacity_dose1}</span>
-                            <span className="dose2">Dose 2 available: {eachCenter.available_capacity_dose2}</span>
+                            <span className="dose1">Dose 1 available: {eachCenter?.available_capacity_dose1}</span>
+                            <span className="dose2">Dose 2 available: {eachCenter?.available_capacity_dose2}</span>
                         </div>
                         <div className="card-slots">
                             <span>Available Slots</span>
@@ -70,7 +70,7 @@ function Card({ eachCenter }) {
                             <div className="card-slot-container">
                                 {
                                     eachCenter.slots.map((slot, idx) => (
-                                        <h6 className="slot" key={idx}>{slot}</h6>
+                                        <h6 className="slot" key={idx}>{slot.time}</h6>
                                     ))
                                 }
                             </div>
@@ -80,6 +80,7 @@ function Card({ eachCenter }) {
                         }}
                         ><h4>Collapse</h4></div>
                     </>
+                    
                 )
             }
 
