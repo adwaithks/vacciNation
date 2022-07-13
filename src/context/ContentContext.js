@@ -18,8 +18,7 @@ const ContentProvider = ({children}) => {
     
     return (
         <ContentContext.Provider value={{
-            date, 
-            setDate,
+            date, setDate,
             district, setDistrict,
             centers, setCenters,
             onlyAvailable, setOnlyAvailable,

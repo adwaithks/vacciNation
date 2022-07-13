@@ -93,6 +93,39 @@ h2 {
     margin-left: 5px;
 }
 
+.find-keywords-container {
+    margin-top: 20px;
+    width: 320px;
+    display: flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+}
+
+.find-keywords-input {
+    width: 100%;
+    outline: none;
+    border-radius: 4px;
+    border: rgb(139, 139, 139) solid 1px;
+    color: white;
+    background-color: rgba(47, 47, 47, 0.244);
+    padding: 10px 10px 10px 40px;
+    font-size: 1.1em;
+}
+
+.find-keywords-input:focus {
+    border: white solid 1px;
+}
+
+.find-keywords-search-icon {
+    position: absolute;
+    left: 0;
+    margin-left: 5px;
+    color: white;
+    font-size: 1.8em !important;
+    height: 100%;
+}
+
 .search-container {
     width: 95%;
     border-radius: 5px;

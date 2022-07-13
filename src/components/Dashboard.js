@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef, useContext } from 'react';
 import Card from './Card';
 import './Dashboard.css';
+import SearchIcon from '@material-ui/icons/Search';
 import AutorenewIcon from '@material-ui/icons/Autorenew';
 import { ContentContext } from '../context/ContentContext';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
@@ -41,15 +42,19 @@ const districtMap = {
     299: "Wayanad"
 }
 
+function getCurrentDate() {
+    let today = new Date();
+    let dd = String(today.getDate()).padStart(2, '0');
+    let mm = String(today.getMonth() + 1).padStart(2, '0');
+    let yyyy = today.getFullYear();
+    let currentDate = dd + '-' + mm + '-' + yyyy;
+    return currentDate;
+}
+
 function Dashboard() {
     useEffect(() => {
-        window.localStorage.setItem('district', '301');
-        window.localStorage.setItem('wwstatus', 'uninit')
-        let today = new Date();
-        let dd = String(today.getDate()).padStart(2, '0');
-        let mm = String(today.getMonth() + 1).padStart(2, '0');
-        let yyyy = today.getFullYear();
-        let currentDate = dd + '-' + mm + '-' + yyyy;
+        //window.localStorage.setItem('district', '301');
+        let currentDate = getCurrentDate();
         window.localStorage.setItem('date', currentDate);
         setLoaderVisibility(true);
         findByDistrict();
@@ -64,21 +69,17 @@ function Dashboard() {
 
     let feeTypeFilter = "All";
 
-    const { date,
-        setDate,
+    const { date, setDate,
         district, setDistrict,
         centers, setCenters,
-        onlyAvailable, setOnlyAvailable, availCenters, setAvailCenters } = useContext(ContentContext);
+        onlyAvailable, setOnlyAvailable, 
+        availCenters, setAvailCenters } = useContext(ContentContext);
     const [loaderVisibility, setLoaderVisibility] = useState(false);
 
     const dateRef = useRef(null);
 
 
-
-
     const findByDistrict = async () => {
-        //console.log('date: ' + date);
-        //console.log('district: ' + district);
         if (date === '') {
             let today = new Date();
             let dd = String(today.getDate()).padStart(2, '0');
@@ -87,7 +88,7 @@ function Dashboard() {
             let currentDate = dd + '-' + mm + '-' + yyyy;
             setDate(currentDate);
         }
-        const uri = `https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByDistrict?district_id=${window.localStorage.getItem('district')}&date=${window.localStorage.getItem('date')}`;
+        const uri = `https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByDistrict?district_id=${window.localStorage.getItem('district')|| 301}&date=${window.localStorage.getItem('date')}`;
         const res = await fetch(uri, {
             method: 'GET'
         });
@@ -98,24 +99,18 @@ function Dashboard() {
             } else {
                 return each.available_capacity > 0;
             }
-
         }
         function allCenters(each) {
             return each.fee_type === feeTypeFilter;
         }
 
         setLoaderVisibility(false);
-        //console.log(response.sessions);
         if (feeTypeFilter !== 'All') {
             setCenters(response.sessions.filter(allCenters))
         } else {
             setCenters(response.sessions)
         }
-        //console.log(response.sessions.filter(checkAvailability));
         setAvailCenters(response.sessions.filter(checkAvailability));
-        //setPaidCenters(response.sessions.filter(findPaidCenters));
-        //setFreeCenters(response.sessions.filter(findFreeCenters));
-        window.localStorage.setItem('availCenters', JSON.stringify(response.sessions.filter(checkAvailability)));
     }
 
     return (
@@ -128,7 +123,7 @@ function Dashboard() {
                         let dateFormatting = e.target.value.split("-");
                         let date = dateFormatting[2] + '-' + dateFormatting[1] + '-' + dateFormatting[0]
                         window.localStorage.setItem('date', date);
-                        setDate(date);
+                        setDate(() => date);
                         setLoaderVisibility(true);
                         findByDistrict();
                     }} />
@@ -146,6 +141,12 @@ function Dashboard() {
 
                     </select>
                 </div>
+                {/*<div className="find-keywords-container">
+                    <SearchIcon className='find-keywords-search-icon' />
+                    <input className='find-keywords-input' onChange={(e) => {
+                        
+                    }} placeholder='Type to filter slots...' type="text" />
+                </div>*/}
                 <div className="available-checkbox-container" onClick={(e) => {
                     setOnlyAvailable(!onlyAvailable);
                 }} >
@@ -185,6 +186,9 @@ function Dashboard() {
                 width={80}
                 visible={loaderVisibility}
             />
+            {
+                
+            }
             <div className="contents">
                 {
                     (centers.length !== 0 && onlyAvailable === false) ? (

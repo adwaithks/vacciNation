@@ -83,8 +83,6 @@ function Card({ eachCenter }) {
                     
                 )
             }
-
-
         </div>
     )
 }
